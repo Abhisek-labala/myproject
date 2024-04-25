@@ -136,9 +136,6 @@ function fetchStates(countryName, stateName) {
     }
 }
 
-    
-
-
     function updateData(id, formData) {
 
         $.ajax({
@@ -347,4 +344,79 @@ function fetchStates(countryName, stateName) {
         // Call fetchCountries function on document ready
         fetchCountries();
     });
-    
+
+   // File: upload.js
+
+   $(document).ready(function(){
+    // Function to handle file input change event
+    $('#spreedsheetfile').change(function(){
+        console.log("File input change event triggered.");
+        // Get the selected file
+        var file = $(this)[0].files[0];
+        console.log("Selected file:", file);
+
+        // Perform validation
+        var validationResult = validateFile(file);
+        console.log("Validation result:", validationResult);
+
+        // Display validation result
+        $('#validationMessages').text(validationResult);
+    });
+
+    // Function to handle button click for form submission
+    $('#uploadButton').click(function(){
+        console.log("Upload button clicked.");
+        // Get the selected file
+        var file = $('#spreedsheetfile')[0].files[0];
+        console.log("Selected file:", file);
+
+        // Perform validation
+        var validationResult = validateFile(file);
+        console.log("Validation result:", validationResult);
+
+        // If file is valid, proceed with form submission via AJAX
+        if (validationResult === "File is valid.") {
+            var formData = new FormData($('#uploadForm')[0]);
+
+            $.ajax({
+                url: './db/spreedsheet.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    $('#validationMessages').text(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        } else {
+            // Display validation result if file is invalid
+            $('#validationMessages').text(validationResult);
+        }
+    });
+});
+
+// Function to validate the selected file
+function validateFile(file) {
+    if (!file) {
+        return "No file selected.";
+    }
+
+    // Check file type
+    var allowedTypes = ['xls', 'xlsx', 'csv'];
+    var fileType = file.name.split('.').pop().toLowerCase();
+    if (allowedTypes.indexOf(fileType) === -1) {
+        return "Invalid file type. Only Excel (XLS, XLSX) and CSV files are allowed.";
+    }
+
+    // Check file size (example: limit to 5MB)
+    var maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+        return "File size exceeds the limit. Maximum size allowed is 5MB.";
+    }
+
+    // If all validations pass
+    return "File is valid.";
+}

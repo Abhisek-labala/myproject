@@ -1,6 +1,3 @@
-<?php
-include 'db/db_connection.php';
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,25 +5,26 @@ include 'db/db_connection.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration Form</title>
-  
+
   <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css"> -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .modal-content {
+    #regModal .modal-content {
       background-color: #87b9e8;
     }
 
-    .modal-dialog .modal-header {
+    #regModal .modal-dialog .modal-header {
       background-color: black;
       color: white;
     }
-    .btn-close
-    {
+
+    .btn-close {
       background-color: white;
-      
+
     }
   </style>
 
@@ -54,7 +52,8 @@ include 'db/db_connection.php';
               </div>
               <div class="mb-3">
                 <label for="username" class="form-label">User Name</label>
-                <input type="text" class="form-control" placeholder="Enter Your Name" id="username" name="username" required>
+                <input type="text" class="form-control" placeholder="Enter Your Name" id="username" name="username"
+                  required>
                 <div class="invalid-feedback">Please enter Username.</div>
               </div>
               <div class="mb-3">
@@ -83,13 +82,13 @@ include 'db/db_connection.php';
 
               <label for="gender" class="form-label">GENDER</label>
               <div class="form-check">
-          <input class="form-check-input" type="radio" name="gender" value="male" id="flexRadioDefault1">
-          <label class="form-check-label" for="flexRadioDefault1">MALE</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="gender" value="female" id="flexRadioDefault2">
-          <label class="form-check-label" for="flexRadioDefault2">FEMALE</label>
-        </div>
+                <input class="form-check-input" type="radio" name="gender" value="male" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">MALE</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="gender" value="female" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">FEMALE</label>
+              </div>
               <div class="mb-3">
                 <label for="country" class="form-label">Country</label>
                 <select class="selectize" id="country" name="country" data-live-search="true" required>
@@ -123,21 +122,23 @@ include 'db/db_connection.php';
                   <label class="form-check-label" for="checkbox4">Dancing</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="Travelling" id="hobby-Travelling" name="hobbies[]">
+                  <input class="form-check-input" type="checkbox" value="Travelling" id="hobby-Travelling"
+                    name="hobbies[]">
                   <label class="form-check-label" for="checkbox5">Travelling</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="IndoorGames" id="hobby-IndoorGames" name="hobbies[]">
+                  <input class="form-check-input" type="checkbox" value="IndoorGames" id="hobby-IndoorGames"
+                    name="hobbies[]">
                   <label class="form-check-label" for="checkbox6">Indoor Games</label>
                 </div>
               </div>
               <div class="mb-3">
-              <label for="file">Upload Image:</label><br>
-              <input type="file" id="fileInput" name="fileToUpload"><br><br>
+                <label for="file">Upload Image:</label><br>
+                <input type="file" id="fileInput" name="fileToUpload"><br><br>
               </div>
-                <div id="imagepreview">
-                  <img id="imageprev" style="width:50%;height:50%;">
-                </div>
+              <div id="imagepreview">
+                <img id="imageprev" style="width:50%;height:50%;">
+              </div>
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
@@ -149,9 +150,12 @@ include 'db/db_connection.php';
       </div>
     </div>
 
+    <!-- Spreedsheet modal -->
+    
+
     <button type="button" class="btn btn-success mb-3 mt-3 addBtn" data-bs-toggle="modal" data-bs-target="#regModal">ADD
       Details</button>
-
+  
     <table id="myTable" class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>
