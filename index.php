@@ -151,11 +151,34 @@
     </div>
 
     <!-- Spreedsheet modal -->
-    
+    <div class="modal fade" id="spreedModal" tabindex="-1" aria-labelledby="spreedModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="spreedModalLabel">Upload Excel</h1>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <a href="./db/spreedsheet.php"> <button class="btn btn-info">Download Template </button></a>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="m-2">
+                            <label for="spreedsheetfile">Upload File</label><br>
+                            <input type="file" id="spreedsheetfile" name="spreedsheetfile"><br><br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="uploadButton">Upload</button>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <button type="button" class="btn btn-success mb-3 mt-3 addBtn" data-bs-toggle="modal" data-bs-target="#regModal">ADD
       Details</button>
-  
+    <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#spreedModal">Upload File</button>
+
     <table id="myTable" class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>
