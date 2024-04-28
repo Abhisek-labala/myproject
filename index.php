@@ -26,6 +26,15 @@
       background-color: white;
 
     }
+    #spreedModal .modal-content
+    {
+      background-color: #000;
+      color: #fff;
+    }
+    #spreedModal a
+    {
+      color: ;
+    }
   </style>
 
 </head>
@@ -156,10 +165,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="spreedModalLabel">Upload Excel</h1>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <a href="./db/spreedsheet.php"> <button class="btn btn-info">Download Template </button></a>
+                <a href="./db/spreedsheet.php">Click here</a>  to  Download Template.
                     <form id="uploadForm" enctype="multipart/form-data">
                         <div class="m-2">
                             <label for="spreedsheetfile">Upload File</label><br>
@@ -167,13 +176,15 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="uploadButton">Upload</button>
+                            <button type="submit" class="btn btn-success" id="uploadButton">Upload</button>
                         </div>  
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <div>
 
     <button type="button" class="btn btn-success mb-3 mt-3 addBtn" data-bs-toggle="modal" data-bs-target="#regModal">ADD
       Details</button>

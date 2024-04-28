@@ -148,7 +148,8 @@ if (isset($_GET['action'])) {
 
 
             // Check if a new file is uploaded and old image exists
-            if ($_FILES['fileToUpload']['name'] != '' && !empty($oldImageFilename)) {
+            // if ($_FILES['fileToUpload']['name'] != '' && !empty($oldImageFilename)) {
+            if ($_FILES['fileToUpload']['name'] != '') {
                 $filename = $_FILES['fileToUpload']['name'];
                     $extension = pathinfo($filename, PATHINFO_EXTENSION);
                     $valid_extension = array("jpg", "jpeg", "png", "gif");

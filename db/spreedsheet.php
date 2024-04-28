@@ -29,7 +29,7 @@ $ews->setCellValue('i1', 'username');
 $ews->setCellValue('j1', 'gender');
 $ews->setCellValue('k1', 'hobbies');
 
-$header = 'a1:j1';
+$header = 'a1:k1';
 $ews->getStyle($header)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('00ffff00');
 $style = array(
     'font' => array('bold' => true, ),
@@ -51,11 +51,12 @@ $ews2->setCellValue('a1', 'Country ID');
 $ews2->setCellValue('b1', 'Country Name');
 $ews2->setCellValue('c1', 'State ID');
 $ews2->setCellValue('d1', 'State Name');
-$ews2->setCellValue('e1', 'Hobbies');
-$ews2->setCellValue('f1', 'Gender');
+$ews2->setCellValue('e1', 'c_id');
+$ews2->setCellValue('f1', 'Hobbies');
+$ews2->setCellValue('g1', 'Gender');
 
-$headerReference = 'a1:f1';
-$ews2->getStyle($headerReference)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('00ffff00');
+$headerReference = 'a1:g1';
+$ews2->getStyle($headerReference)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('00ff0000');
 $ews2->getStyle($headerReference)->applyFromArray($style);
 
 // Set column widths for Reference sheet
@@ -67,7 +68,7 @@ for ($col = ord('a'); $col <= ord('f'); $col++) {
 
 // Assuming you have tables named 'countries' and 'states' with columns 'id' and 'name'
 $countryQuery = "SELECT id, country_name FROM countries";
-$stateQuery = "SELECT sid, state_name FROM states";
+$stateQuery = "SELECT sid, state_name,country_id FROM states";
 
 $countryResult = pg_query($conn, $countryQuery);
 $stateResult = pg_query($conn, $stateQuery);
@@ -84,6 +85,7 @@ $row = 2; // Reset row for states
 while ($stateRow = pg_fetch_assoc($stateResult)) {
     $ews2->setCellValue('c' . $row, $stateRow['sid']);
     $ews2->setCellValue('d' . $row, $stateRow['state_name']);
+    $ews2->setCellValue('e' . $row, $stateRow['country_id']);
     $row++;
 }
 $hobbiesArray = array(
