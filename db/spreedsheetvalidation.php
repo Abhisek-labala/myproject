@@ -86,9 +86,22 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
             }
         }
 
-        // If all validations are successful, insert data into the database
+        // If all validations are successful, insert or update data into the database
 
-        // Insert data into the database
+        // Prepare a query to check if the ID exists
+        $existingIds = array();
+        $query = "SELECT id FROM regforms";
+        $result = pg_query($conn, $query);
+        if ($result) {
+            while ($row = pg_fetch_assoc($result)) {
+                $existingIds[] = $row['id'];
+            }
+        } else {
+            echo "Error retrieving existing IDs: " . pg_last_error($conn);
+            exit;
+        }
+
+        // Insert or update data into the database
         foreach ($objPHPExcel->getActiveSheet()->toArray() as $key => $row) {
             if ($key !== 0) { // Skip the header row
                 $id = pg_escape_string($row[0]);
@@ -102,19 +115,30 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
                 $username = pg_escape_string($row[8]);
                 $gender = pg_escape_string($row[9]);
                 $hobbies = pg_escape_string($row[10]);
-
-                $sql = "INSERT INTO regforms (ID, name, email, phone, dob, address, country, state, username, gender, hobbies)
-                        VALUES ('$id', '$name', '$email', '$phone', '$dob', '$address', '$country', '$state', '$username', '$gender', '$hobbies')";
+                $pass ="password";
+                $phash=password_hash($pass,PASSWORD_DEFAULT);
+                
+                // Check if the ID exists in the database
+                if (in_array($id, $existingIds)) {
+                    // Update the record
+                    $sql = "UPDATE regforms 
+                            SET name='$name', email='$email', phone='$phone', dob='$dob', password='$phash', address='$address', country='$country', state='$state', username='$username', gender='$gender', hobbies='$hobbies' 
+                            WHERE id='$id'";
+                } else {
+                    // Insert the record
+                    $sql = "INSERT INTO regforms (ID, name, email, phone, dob, password, address, country, state, username, gender, hobbies)
+                            VALUES ('$id', '$name', '$email', '$phone', '$dob', '$phash', '$address', '$country', '$state', '$username', '$gender', '$hobbies')";
+                }
 
                 $result = pg_query($conn, $sql);
                 if (!$result) {
-                    echo "Error inserting data: " . pg_last_error($conn);
+                    echo "Error inserting/updating data: " . pg_last_error($conn);
                     exit;
                 }
             }
         }
 
-        echo "Data inserted successfully.";
+        echo "Data inserted/updated successfully.";
 
         pg_close($conn);
     } else {

@@ -38,11 +38,11 @@ $style = array(
 $ews->getStyle($header)->applyFromArray($style);
 
 // Set column widths
-for ($col = ord('a'); $col <= ord('j'); $col++) {
+for ($col = ord('a'); $col <= ord('k'); $col++) {
     $ews->getColumnDimension(chr($col))->setAutoSize(true);
 }
 
-$ews2 = new \PHPExcel_Worksheet($spreadsheet, 'Reference');
+$ews2 = new PHPExcel_Worksheet($spreadsheet, 'Reference');
 $spreadsheet->addSheet($ews2, 0);
 $ews2->setTitle('Reference');
 
@@ -60,11 +60,36 @@ $ews2->getStyle($headerReference)->getFill()->setFillType(\PHPExcel_Style_Fill::
 $ews2->getStyle($headerReference)->applyFromArray($style);
 
 // Set column widths for Reference sheet
-for ($col = ord('a'); $col <= ord('f'); $col++) {
+for ($col = ord('a'); $col <= ord('g'); $col++) {
     $ews2->getColumnDimension(chr($col))->setAutoSize(true);
 }
 
+// Fetch hobbies and gender data
+$hobbiesArray = array(
+    1 => 'Cricket',
+    2 => 'Football',
+    3 => 'Dancing',
+    4 => 'Travelling',
+    5 => 'Indoor games'
+);
 
+$genderArray = array(
+    1 => 'Male',
+    2 => 'Female',
+);
+
+// Populate hobbies and gender data in the Reference sheet
+$row = 2; // Start from row 2 (after headers)
+foreach ($hobbiesArray as $id => $hobby) {
+    $ews2->setCellValue('f' . $row, $hobby);
+    $row++;
+}
+
+$row = 2; // Reset row for gender
+foreach ($genderArray as $id => $gender) {
+    $ews2->setCellValue('g' . $row, $gender);
+    $row++;
+}
 
 // Assuming you have tables named 'countries' and 'states' with columns 'id' and 'name'
 $countryQuery = "SELECT id, country_name FROM countries";
@@ -88,21 +113,37 @@ while ($stateRow = pg_fetch_assoc($stateResult)) {
     $ews2->setCellValue('e' . $row, $stateRow['country_id']);
     $row++;
 }
-$hobbiesArray = array(
-    1 => 'Reading',
-    2 => 'Cooking',
-    3 => 'Sports',
-    4 => 'Gardening',
-    // Add more hobbies as needed
-);
 
-$genderArray = array(
-    1 => 'Male',
-    2 => 'Female',
-    3 => 'Other',
-    // Add more genders as needed
-);
+// Assuming $userData is an array containing user data fetched from the database
+// Modify the code to include hobbies and gender data in the Userdata sheet
+$userData = []; // Replace this with your actual data retrieval logic
 
+$row = 2; // Start from row 2 (after headers)
+foreach ($userData as $user) {
+    $ews->setCellValue('a' . $row, $user['id']);
+    $ews->setCellValue('b' . $row, $user['name']);
+    $ews->setCellValue('c' . $row, $user['email']);
+    $ews->setCellValue('d' . $row, $user['phone']);
+    $ews->setCellValue('e' . $row, $user['dob']);
+    $ews->setCellValue('f' . $row, $user['address']);
+    $ews->setCellValue('g' . $row, $user['country']);
+    $ews->setCellValue('h' . $row, $user['state']);
+    $ews->setCellValue('i' . $row, $user['username']);
+    $ews->setCellValue('j' . $row, $genderArray[$user['gender']]);
+    
+    // Parse hobbies IDs and display them as strings
+    $hobbies = explode(',', $user['hobbies']);
+    $hobbiesString = '';
+    foreach ($hobbies as $hobbyId) {
+        if (isset($hobbiesArray[$hobbyId])) {
+            $hobbiesString .= $hobbiesArray[$hobbyId] . ', ';
+        }
+    }
+    $hobbiesString = rtrim($hobbiesString, ', '); // Remove trailing comma and space
+    $ews->setCellValue('k' . $row, $hobbiesString);
+
+    $row++;
+}
 
 // Close database connection
 pg_close($conn);
@@ -112,7 +153,7 @@ header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetm
 header('Content-Disposition: attachment;filename="template.xlsx"');
 header('Cache-Control: max-age=0');
 
-$writer = \PHPExcel_IOFactory::createWriter($spreadsheet, 'Excel2007');
+$writer = PHPExcel_IOFactory::createWriter($spreadsheet, 'Excel2007');
 ob_end_clean();
 $writer->setIncludeCharts(true);
 $writer->save('php://output');

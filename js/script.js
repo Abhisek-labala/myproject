@@ -388,7 +388,7 @@
             
                 // Function to handle button click for form submission
                 $('#uploadButton').click(function(event){
-                    event.preventDefault();
+                    event.preventDefault(); 
                     // Get the selected file
                     var file = $('#spreedsheetfile')[0].files[0];
                     console.log("Selected file:", file);
