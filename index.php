@@ -31,10 +31,12 @@
       background-color: #000;
       color: #fff;
     }
-    #spreedModal a
-    {
-      color: ;
-    }
+   
+    #validationMessages
+  {
+    color: red;
+
+  }
   </style>
 
 </head>
@@ -167,6 +169,7 @@
                     <h1 class="modal-title fs-5" id="spreedModalLabel">Upload Excel</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div id="validationMessages"></div>
                 <div class="modal-body">
                 <a href="./db/spreedsheet.php">Click here</a>  to  Download Template.
                     <form id="uploadForm" enctype="multipart/form-data">
@@ -189,6 +192,7 @@
     <button type="button" class="btn btn-success mb-3 mt-3 addBtn" data-bs-toggle="modal" data-bs-target="#regModal">ADD
       Details</button>
     <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#spreedModal">Upload File</button>
+    
 
     <table id="myTable" class="table table-striped table-bordered" style="width:100%">
       <thead>

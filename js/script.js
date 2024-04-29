@@ -377,9 +377,9 @@
                     }
             
                     // Check file size (example: limit to 5MB)
-                    var maxSize = 5 * 1024 * 1024; // 5MB in bytes
+                    var maxSize = 1 * 1024 * 1024; // 1MB in bytes
                     if (file.size > maxSize) {
-                        return "File size exceeds the limit. Maximum size allowed is 5MB.";
+                        return "File size exceeds the limit. Maximum size allowed is 1MB.";
                     }
             
                     // If all validations pass
@@ -410,6 +410,7 @@
                             success: function(response){
                                 $('#validationMessages').text(response);
                                 console.log(response);
+                                alert(response);
                             },
                             error: function(xhr, status, error) {
                                 // event.preventDefault();

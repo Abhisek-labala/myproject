@@ -1,19 +1,22 @@
 <?php
 require_once 'db_connection.php';
+$insertCount = 0;
+$updateCount = 0;
+
 if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
     // Access uploaded file details
     $uploadedFileName = $_FILES['spreedsheetfile']['name'];
     $uploadedFileTmp = $_FILES['spreedsheetfile']['tmp_name'];
     $uploadedFileType = $_FILES['spreedsheetfile']['type'];
 
-    // Check file type (mime type or file extension)
-    if (in_array($uploadedFileType, array('application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'))) {
+    // Check file type
+    if (in_array($uploadedFileType, array('application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv' ))) {
         // Load PHPExcel library for XLS and XLSX files
         require '../PHPExcel-v7.4/PHPExcel/IOFactory.php';
 
         // Load the uploaded file
         if ($uploadedFileType === 'text/csv') {
-            // For CSV files, read using PHP built-in functions or libraries like fgetcsv()
+            // For CSV files, read using PHP built-in functions
             $fileData = file_get_contents($uploadedFileTmp);
             $csvData = str_getcsv($fileData, "\n"); // Assuming each row is separated by newline
             $uploadedHeaders = str_getcsv($csvData[0]); // Assuming headers are in the first row
@@ -68,7 +71,7 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
             }
         }
 
-        // Compare headers with your template
+        // header template comparing
         $templateHeaders = array('ID', 'name', 'email', 'phone', 'dob', 'address', 'country', 'state', 'username', 'gender', 'hobbies');
 
         if ($uploadedHeaders !== $templateHeaders) {
@@ -76,7 +79,7 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
             exit;
         }
 
-        echo "File uploaded successfully and matches the template.";
+        echo "File matches the template.";
 
         // Display empty cell indices
         if (!empty($emptyCells)) {
@@ -86,9 +89,6 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
             }
         }
 
-        // If all validations are successful, insert or update data into the database
-
-        // Prepare a query to check if the ID exists
         $existingIds = array();
         $query = "SELECT id FROM regforms";
         $result = pg_query($conn, $query);
@@ -101,7 +101,7 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
             exit;
         }
 
-        // Insert or update data into the database
+        // insertion and updating into database
         foreach ($objPHPExcel->getActiveSheet()->toArray() as $key => $row) {
             if ($key !== 0) { // Skip the header row
                 $id = pg_escape_string($row[0]);
@@ -124,10 +124,12 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
                     $sql = "UPDATE regforms 
                             SET name='$name', email='$email', phone='$phone', dob='$dob', password='$phash', address='$address', country='$country', state='$state', username='$username', gender='$gender', hobbies='$hobbies' 
                             WHERE id='$id'";
+                    $updateCount++;
                 } else {
                     // Insert the record
                     $sql = "INSERT INTO regforms (ID, name, email, phone, dob, password, address, country, state, username, gender, hobbies)
                             VALUES ('$id', '$name', '$email', '$phone', '$dob', '$phash', '$address', '$country', '$state', '$username', '$gender', '$hobbies')";
+                    $insertCount++;
                 }
 
                 $result = pg_query($conn, $sql);
@@ -138,7 +140,7 @@ if ($_FILES['spreedsheetfile']['error'] === UPLOAD_ERR_OK) {
             }
         }
 
-        echo "Data inserted/updated successfully.";
+        echo "Data inserted: $insertCount, Data updated: $updateCount";
 
         pg_close($conn);
     } else {
