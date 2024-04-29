@@ -114,8 +114,7 @@ while ($stateRow = pg_fetch_assoc($stateResult)) {
     $row++;
 }
 
-// Assuming $userData is an array containing user data fetched from the database
-// Modify the code to include hobbies and gender data in the Userdata sheet
+
 $userData = []; // Replace this with your actual data retrieval logic
 
 $row = 2; // Start from row 2 (after headers)
