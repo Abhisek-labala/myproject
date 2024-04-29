@@ -17,19 +17,18 @@ $spreadsheet->getProperties()
 $ews = $spreadsheet->getSheet(0);
 $ews->setTitle('Userdata');
 
-$ews->setCellValue('a1', 'ID'); // Sets cell 'a1' to value 'ID 
-$ews->setCellValue('b1', 'name');
-$ews->setCellValue('c1', 'email');
-$ews->setCellValue('d1', 'phone');
-$ews->setCellValue('e1', 'dob');
-$ews->setCellValue('f1', 'address');
-$ews->setCellValue('g1', 'country');
-$ews->setCellValue('h1', 'state');
-$ews->setCellValue('i1', 'username');
-$ews->setCellValue('j1', 'gender');
-$ews->setCellValue('k1', 'hobbies');
+$ews->setCellValue('a1', 'name');
+$ews->setCellValue('b1', 'email');
+$ews->setCellValue('c1', 'phone');
+$ews->setCellValue('d1', 'dob');
+$ews->setCellValue('e1', 'address');
+$ews->setCellValue('f1', 'country');
+$ews->setCellValue('g1', 'state');
+$ews->setCellValue('h1', 'username');
+$ews->setCellValue('i1', 'gender');
+$ews->setCellValue('j1', 'hobbies');
 
-$header = 'a1:k1';
+$header = 'a1:j1';
 $ews->getStyle($header)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('00ffff00');
 $style = array(
     'font' => array('bold' => true, ),
@@ -38,7 +37,7 @@ $style = array(
 $ews->getStyle($header)->applyFromArray($style);
 
 // Set column widths
-for ($col = ord('a'); $col <= ord('k'); $col++) {
+for ($col = ord('a'); $col <= ord('j'); $col++) {
     $ews->getColumnDimension(chr($col))->setAutoSize(true);
 }
 
@@ -114,21 +113,19 @@ while ($stateRow = pg_fetch_assoc($stateResult)) {
     $row++;
 }
 
-
 $userData = []; // Replace this with your actual data retrieval logic
 
 $row = 2; // Start from row 2 (after headers)
 foreach ($userData as $user) {
-    $ews->setCellValue('a' . $row, $user['id']);
-    $ews->setCellValue('b' . $row, $user['name']);
-    $ews->setCellValue('c' . $row, $user['email']);
-    $ews->setCellValue('d' . $row, $user['phone']);
-    $ews->setCellValue('e' . $row, $user['dob']);
-    $ews->setCellValue('f' . $row, $user['address']);
-    $ews->setCellValue('g' . $row, $user['country']);
-    $ews->setCellValue('h' . $row, $user['state']);
-    $ews->setCellValue('i' . $row, $user['username']);
-    $ews->setCellValue('j' . $row, $genderArray[$user['gender']]);
+    $ews->setCellValue('a' . $row, $user['name']);
+    $ews->setCellValue('b' . $row, $user['email']);
+    $ews->setCellValue('c' . $row, $user['phone']);
+    $ews->setCellValue('d' . $row, $user['dob']);
+    $ews->setCellValue('e' . $row, $user['address']);
+    $ews->setCellValue('f' . $row, $user['country']);
+    $ews->setCellValue('g' . $row, $user['state']);
+    $ews->setCellValue('h' . $row, $user['username']);
+    $ews->setCellValue('i' . $row, $genderArray[$user['gender']]);
     
     // Parse hobbies IDs and display them as strings
     $hobbies = explode(',', $user['hobbies']);
@@ -139,7 +136,7 @@ foreach ($userData as $user) {
         }
     }
     $hobbiesString = rtrim($hobbiesString, ', '); // Remove trailing comma and space
-    $ews->setCellValue('k' . $row, $hobbiesString);
+    $ews->setCellValue('j' . $row, $hobbiesString);
 
     $row++;
 }

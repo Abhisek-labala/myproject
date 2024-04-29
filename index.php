@@ -178,7 +178,7 @@
                             <input type="file" id="spreedsheetfile" name="spreedsheetfile"><br><br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-success" id="uploadButton">Upload</button>
                         </div>  
                     </form>

@@ -58,6 +58,7 @@
                 $('#dob').val(rowData.dob);
                 $('#address').val(rowData.address);
                 $countryname = rowData.country;
+                console.log(rowData);
                 
                 // Fetch and set the country first
                 fetchcountrybyid($countryname, function() {
@@ -76,6 +77,11 @@
                         $('#hobby-' + hobby.trim()).prop('checked', true);
                     });
                 }
+                var imageUrl = unescape(rowData.image_url);
+                console.log(imageUrl);
+
+                // Set the image preview
+                $('#imagepreview').attr('src', imageUrl);
             
                 $('#regModal').modal('show');
             });
@@ -345,10 +351,92 @@
                 fetchCountries();
             });
 
+            // $(document).ready(function(){
+            //     // Function to handle file input change event
+            //     $('#spreedsheetfile').change(function(event){
+            //         event.preventDefault(); // Prevent default form submission behavior
+            //         console.log("File input change event triggered.");
+                    
+            //         // Get the selected file
+            //         var file = $(this)[0].files[0];
+            //         console.log("Selected file:", file);
+            
+            //         // Perform validation
+            //         var validationResult = validateFile(file);
+            //         console.log("Validation result:", validationResult);
+            
+            //         // Display validation result
+            //         $('#validationMessages').text(validationResult);
+            //     });
+            
+            //     // Function to validate the selected file
+            //     function validateFile(file) {
+            //         if (!file) {
+            //             return "No file selected.";
+            //         }
+            
+            //         // Check file type
+            //         var allowedTypes = ['xls', 'xlsx', 'csv'];
+            //         var fileType = file.name.split('.').pop().toLowerCase();
+            //         if (allowedTypes.indexOf(fileType) === -1) {
+            //             return "Invalid file type. Only Excel (XLS, XLSX) and CSV files are allowed.";
+            //         }
+            
+            //         // Check file size (example: limit to 5MB)
+            //         var maxSize = 1 * 1024 * 1024; // 1MB in bytes
+            //         if (file.size > maxSize) {
+            //             return "File size exceeds the limit. Maximum size allowed is 1MB.";
+            //         }
+            
+            //         // If all validations pass
+            //         return "File is valid.";
+            //     }
+            
+            //     // Function to handle button click for form submission
+            //     $('#uploadButton').click(function(event){
+            //         // event.preventDefault(); 
+            //         // Get the selected file
+            //         var file = $('#spreedsheetfile')[0].files[0];
+            //         console.log("Selected file:", file);
+            
+            //         // Perform validation
+            //         var validationResult = validateFile(file);
+            //         console.log("Validation result:", validationResult);
+            
+            //         // If file is valid, proceed with form submission via AJAX
+            //         if (validationResult === "File is valid.") {
+            //             var formData = new FormData($('#uploadForm')[0]);
+            
+            //             $.ajax({
+            //                 url: './db/spreedsheetvalidation.php',
+            //                 type: 'POST',
+            //                 data: formData,
+            //                 processData: false,
+            //                 contentType: false,
+            //                 success: function(response){
+            //                     $('#validationMessages').text(response);
+            //                     console.log(response);
+            //                     alert(response);
+            //                     fetchData();
+            //                 },
+            //                 error: function(xhr, status, error) {
+            //                     // event.preventDefault();
+            //                     alert(response);
+            //                     console.error(xhr.responseText);
+            //                 }
+            //             });
+            //         } else {
+            //             // Display validation result if file is invalid
+            //             // event.preventDefault();
+            //             $('#validationMessages').text(validationResult);
+            //             console.error("Validation error:", validationResult); // Log validation error
+            //         }
+            //     });
+            // });
+            
             $(document).ready(function(){
                 // Function to handle file input change event
                 $('#spreedsheetfile').change(function(event){
-                    event.preventDefault(); // Prevent default form submission behavior
                     console.log("File input change event triggered.");
                     
                     // Get the selected file
@@ -388,7 +476,6 @@
             
                 // Function to handle button click for form submission
                 $('#uploadButton').click(function(event){
-                    // event.preventDefault(); 
                     // Get the selected file
                     var file = $('#spreedsheetfile')[0].files[0];
                     console.log("Selected file:", file);
@@ -411,19 +498,21 @@
                                 $('#validationMessages').text(response);
                                 console.log(response);
                                 alert(response);
+                                window.location.href = "index.php";
                             },
                             error: function(xhr, status, error) {
-                                // event.preventDefault();
-                                alert(response);
+                                alert("Error occurred while uploading file. Please try again later.");
                                 console.error(xhr.responseText);
                             }
                         });
                     } else {
                         // Display validation result if file is invalid
-                        // event.preventDefault();
                         $('#validationMessages').text(validationResult);
                         console.error("Validation error:", validationResult); // Log validation error
                     }
+            
+                    // Prevent default form submission behavior
+                    return false;
                 });
             });
             
