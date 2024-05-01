@@ -1,0 +1,66 @@
+
+        $existingusernames = array();
+        $query = "SELECT username FROM regforms";
+        $result = pg_query($conn, $query);
+        if ($result) {
+            while ($row = pg_fetch_assoc($result)) {
+                $existingusernames[] = $row['username'];
+            }
+        } else {
+            echo "Error retrieving existing usernames: " . pg_last_error($conn);
+            exit;
+        }
+
+        // Create an array to store encountered usernames
+        $excelUsernames = array();
+
+        // insertion and updating into database
+        foreach ($objPHPExcel->getActiveSheet()->toArray() as $key => $row) {
+            if ($key !== 0) { // Skip the header row
+                // Check if any value in the row is empty
+                if (in_array('', $row)) {
+                    echo "Error: Row " . ($key + 1) . " contains empty values. Skipping insertion for this record.<br>";
+                    continue;
+                }
+                
+                // Extracting data from the row
+                $name = pg_escape_string($row[0]);
+                $email = pg_escape_string($row[1]);
+                $phone = pg_escape_string($row[2]);
+                $dob = pg_escape_string($row[3]);
+                $address = pg_escape_string($row[4]);
+                $country = pg_escape_string($row[5]);
+                $state = pg_escape_string($row[6]);
+                $username = pg_escape_string($row[7]);
+                $gender = pg_escape_string($row[8]);
+                $hobbies = pg_escape_string($row[9]);
+                $pass = "password";
+                $phash = password_hash($pass, PASSWORD_DEFAULT);
+
+                // Check if the username exists in the Excel file
+                if (in_array($username, $excelUsernames)) {
+                    echo "Error: Username '$username' already exists in the Excel file. Skipping insertion for this record.<br>";
+                    continue;
+                }
+
+                // Check if the username exists in the database
+                if (in_array($username, $existingusernames)) {
+                    echo "Error: Username '$username' already exists in the database. Skipping insertion for this record.<br>";
+                    continue;
+                }
+
+                // If username is unique, proceed with insertion
+                $sql = "INSERT INTO regforms (name, email, phone, dob, password, address, country, state, username, gender, hobbies)
+                        VALUES ('$name', '$email', '$phone', '$dob', '$phash', '$address', '$country', '$state', '$username', '$gender', '$hobbies')";
+                $insertCount++;
+
+                $result = pg_query($conn, $sql);
+                if (!$result) {
+                    echo "Error inserting data: " . pg_last_error($conn);
+                    exit;
+                }
+
+                // Add the username to the excelUsernames array
+                $excelUsernames[] = $username;
+            }
+        }

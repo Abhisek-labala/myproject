@@ -37,11 +37,74 @@
     color: red;
 
   }
+  #spreedModal .modal-dialog
+  {
+    margin-left: 15%;
+  }
+  
+  #spreedModal .modal-content
+  {
+    width: 150vh;
+    
+  }
+  #spreedModal .modal-body
+  {
+    overflow-x: auto;
+  }
+
+table {
+    width: 100%
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 2px;
+    text-align: left;
+}
+/* 
+ #spreedModal .modal-footer {
+  display: flex;
+  justify-content: left;
+}  */
+
+@media (max-width: 768px) {
+  .modal-dialog {
+    width: 50%; /* Adjust width for smaller screens */
+    max-width: none;
+  }
+}
+.toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
   </style>
 
 </head>
 
 <body>
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <img src="..." class="rounded me-2" alt="...">
+    <strong class="me-auto">Bootstrap</strong>
+    <small class="text-body-secondary">11 mins ago</small>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    Hello, world! This is a toast message.
+  </div>
+</div>
   <h1 class="text-center">Welcome to Dashboard</h1>
   <div class="container-fluid">
 
@@ -93,11 +156,11 @@
 
               <label for="gender" class="form-label">GENDER</label>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gender" value="male" id="flexRadioDefault1">
+                <input class="form-check-input" type="radio" name="gender" value="Male" id="flexRadioDefault1">
                 <label class="form-check-label" for="flexRadioDefault1">MALE</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gender" value="female" id="flexRadioDefault2">
+                <input class="form-check-input" type="radio" name="gender" value="Female" id="flexRadioDefault2">
                 <label class="form-check-label" for="flexRadioDefault2">FEMALE</label>
               </div>
               <div class="mb-3">
@@ -169,7 +232,7 @@
                     <h1 class="modal-title fs-5" id="spreedModalLabel">Upload Excel</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div id="validationMessages"></div>
+                
                 <div class="modal-body">
                 <a href="./db/spreedsheet.php">Click here</a>  to  Download Template.
                     <form id="uploadForm" enctype="multipart/form-data">
@@ -177,9 +240,12 @@
                             <label for="spreedsheetfile">Upload File</label><br>
                             <input type="file" id="spreedsheetfile" name="spreedsheetfile"><br><br>
                         </div>
+                        
+                        <div id="validationMessages"></div>
+                        <div id="excelTable"></div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success" id="uploadButton">Upload</button>
+                        <button type="button" class="btn btn-primary" id="preview">Preview</button><br><br>
+                            <!-- <button type="button" class="btn btn-success" id="uploadButton">Upload</button> -->
                         </div>  
                     </form>
                 </div>
