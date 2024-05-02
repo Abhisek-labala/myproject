@@ -26,7 +26,7 @@ if (isset($_GET['action'])) {
         }
         if (pg_num_rows($result) > 0) {
             while ($row = pg_fetch_assoc($result)) {
-                $row['image_url'] = '<img src="/myproject/uploads/' . $row['image_url'] . '" width="50" height="50">';
+                $row['image_url'] = '<img src="/myproject/uploads/' . $row['image_url'] . '" width="100" height="100">';
                 $data[] = $row;
             }
         }

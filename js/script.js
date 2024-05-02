@@ -77,11 +77,11 @@ $(document).on('click', '.editBtn', function () {
             $('#hobby-' + hobby.trim()).prop('checked', true);
         });
     }
-    var imageUrl = unescape(rowData.image_url);
-    console.log(imageUrl);
 
-    // Set the image preview
-    $('#imagepreview').attr('src', imageUrl);
+var imageUrl = $('<div>').html(rowData.image_url).find('img').attr('src');
+console.log(imageUrl);
+
+$('#imageprev').attr('src', imageUrl);
 
     $('#regModal').modal('show');
 });

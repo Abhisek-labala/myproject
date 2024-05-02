@@ -22,6 +22,8 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
 
 </head>
 
@@ -37,7 +39,7 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                     </div>
-                    <form id="SignupForm" enctype="multipart/form-data" action="signup.php" method="POST"   >
+                    <form id="SignupForm" enctype="multipart/form-data" action="signup.php" method="POST">
                         <div class="form-group row">
                             <div class="col-sm-6 mb-sm-0">
                                 <label for="name" class="form-label">Name</label>
@@ -86,36 +88,75 @@
                             <div class="col-sm-6 mt-1">
                                 <label for="gender">GENDER</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gender" value="male"
+                                    <input class="form-check-input" type="radio" name="gender" value="Male"
                                         id="flexRadioDefault1">
                                     <label class="form-check-label" for="flexRadioDefault1">MALE</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gender" value="female"
+                                    <input class="form-check-input" type="radio" name="gender" value="Female"
                                         id="flexRadioDefault2">
                                     <label class="form-check-label" for="flexRadioDefault2">FEMALE</label>
                                 </div>
                             </div>
                             <div class="col-sm-6 mb-3 mt-2 mb-sm-0">
-                                <label for="country" class="form-label">Country</label><br>
-                                <select class="form-select" id="country" name="country" required>
+                                <label for="country" class="form-label">Country</label>
+                                <select class="selectize" id="country" name="country" data-live-search="true" required>
                                     <option selected disabled value="">Select country</option>
-                                    <option value="India">India</option>
-                                    <option value="US">US</option>
-                                    <option value="Japan">Japan</option>
-                                    <option value="China">China</option>
-                                    <option value="France">France</option>
                                 </select>
                                 <div class="invalid-feedback">Please select your country.</div>
                             </div>
-
                             <div class="col-sm-6 mb-2 mt-2">
+                                <label for="state" class="form-label">State</label>
+                                <select class="selectize" id="state" name="state" required>
+                                    <option selected disabled value="">Select state</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your state.</div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-12 m-3">
                                 <label for="file">Upload Image:</label><br>
                                 <input type="file" id="fileInput" name="fileToUpload"><br><br>
-                                <div id="imagepreview">
+                                <div id="imagepreview" class="col-sm-6 mt-2">
                                     <img id="imageprev" style="width:10%;height:10%;">
                                 </div>
                             </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-2">
+                                    <label id="hobby-" name="hobbies">Hoobies :</label><br>
+                                    <div class="form-check d-inline-block mr-3">
+                                        <input class="form-check-input" type="checkbox" value="Cricket"
+                                            id="hobby-Cricket" name="hobbies[]">
+                                        <label class="form-check-label" for="checkbox1">Cricket</label>
+                                    </div>
+                                    <div class="form-check d-inline-block mr-3">
+                                        <input class="form-check-input" type="checkbox" value="Football"
+                                            id="hobby-Football" name="hobbies[]">
+                                        <label class="form-check-label" for="checkbox2">Football</label>
+                                    </div>
+                                    <div class="form-check d-inline-block mr-3">
+                                        <input class="form-check-input" type="checkbox" value="Singing"
+                                            id="hobby-Singing" name="hobbies[]">
+                                        <label class="form-check-label" for="checkbox3">Singing</label>
+                                    </div>
+                                    <div class="form-check d-inline-block mr-3">
+                                        <input class="form-check-input" type="checkbox" value="Dancing"
+                                            id="hobby-Dancing" name="hobbies[]">
+                                        <label class="form-check-label" for="checkbox4">Dancing</label>
+                                    </div>
+                                    <div class="form-check d-inline-block mr-3">
+                                        <input class="form-check-input" type="checkbox" value="Travelling"
+                                            id="hobby-Travelling" name="hobbies[]">
+                                        <label class="form-check-label" for="checkbox5">Travelling</label>
+                                    </div>
+                                    <div class="form-check d-inline-block">
+                                        <input class="form-check-input" type="checkbox" value="IndoorGames"
+                                            id="hobby-IndoorGames" name="hobbies[]">
+                                        <label class="form-check-label" for="checkbox6">Indoor Games</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <button class="btn btn-primary btn-user btn-block mb-2">
                                 Register Account
                             </button>
@@ -129,27 +170,29 @@
         </div>
     </div>
     </div>
-           
+
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
     <script>
-    $(document).ready(function () {
-    $('#fileInput').on('change', function(event) {
-    var input = event.target;
-    var reader = new FileReader();
-    reader.onload = function() {
-      var preview = $('#imageprev');
-      preview.attr('src', reader.result);
-    }
-    reader.readAsDataURL(input.files[0]);
+        $(document).ready(function () {
+            $('#fileInput').on('change', function (event) {
+                var input = event.target;
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var preview = $('#imageprev');
+                    preview.attr('src', reader.result);
+                }
+                reader.readAsDataURL(input.files[0]);
 
-    // Displaying file path
-    var filePath = input.value;
-    $('#imagePath').text("File Path: " + filePath);
-  });
-});
+                // Displaying file path
+                var filePath = input.value;
+                $('#imagePath').text("File Path: " + filePath);
+            });
+        });
 
-</script>
+    </script>
 </body>
 
 </html>
@@ -168,6 +211,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $address = $_POST['address'];
     $gender = $_POST['gender'];
     $country = $_POST['country'];
+    $state = $_POST['state'];
+    $hobby = isset($_POST['hobbies']) ? $_POST['hobbies'] : array();
+
+$hobbies = implode(',', $hobby);
+
     $errors = array();
 
     $query_username = "SELECT username FROM regforms WHERE username='$username'";
@@ -194,22 +242,23 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 // Move the uploaded file to the destination directory
                 if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $path)) {
-                    $phash=password_hash($password,PASSWORD_DEFAULT);
-                    $query = "INSERT INTO regforms (name,username,password, dob, phone, email, address, gender, country, image_url) 
-                              VALUES ('$name','$username','$phash', '$dob', '$phone', '$email', '$address', '$gender', '$country', '$new_name')";
+                    $phash = password_hash($password, PASSWORD_DEFAULT);
+                    // Modified query to fix the SQL syntax issue
+                    $query = "INSERT INTO regforms (name,username,password, dob, phone, email, address, gender, country,state,hobbies, image_url) 
+                              VALUES ('$name','$username','$phash', '$dob', '$phone', '$email', '$address', '$gender', '$country',$state,'$hobbies', '$new_name')";
                     // Execute the query to insert data into the database
                     $result = pg_query($conn, $query);
 
                     if ($result) {
                         // If data is inserted successfully, redirect to login.php
                         echo '<script>
-                        alert("Account created Succeesfully.Kindly login");
+                        alert("Account created Successfully. Kindly login");
                         window.location.href="login.php";
                         </script>';
                         exit; // Stop further execution
                     } else {
                         // Handle database insertion failure
-                        echo 'data not inserted';
+                        echo 'Data not inserted';
                     }
                 } else {
                     // Handle file upload failure
@@ -227,4 +276,3 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 ob_end_flush();
 ?>
-
